@@ -5,7 +5,7 @@ Calc = {}
 
 # test case
 #SmilesCase = "CC(=O)C1(O)CC2OC12";
-SmilesCase = "CC=CCO"
+SmilesCase = "CCC1COC1(C)CC"
 
 class Graph:
     def __init__(self):
@@ -78,7 +78,7 @@ def Smiles2Vector(Smiles: str) -> []:
     length = len(Smiles)
     if length == 0:
         return []
-    branchAtoms = Atom(-1,-1)
+    branchAtom = Atom(-1,-1)
     BondIndex = 1
     # 此处为关键处理部分
     preBond = 1
@@ -127,10 +127,11 @@ def Smiles2Vector(Smiles: str) -> []:
             preBond = 3
         # 此时读到分支开始
         if atom == '(':
-            pass
+            branchAtom = preAtom # 读到分支，则记录之前的原子作为分支开始
+
         # 此时读到分支结束
         if atom == ')':
-            pass
+            preAtom = branchAtom # 读到分支结束，则下一个原子应该与分支前的原子相连
         # 此时读到一个环
         if 0 < ord(atom) < 9:
             pass
