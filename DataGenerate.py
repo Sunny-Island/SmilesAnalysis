@@ -240,17 +240,47 @@ def Group_Statistics():
             pass
         else:
             Smiles2Vector(Smiles[0])
-            print(Type)
-            Type+=1
+            #print(Type)
+            #Type += 1
             for atom in G.AllAtoms:
+                TempIndex = atom.Type
+                O1 = 0
+                O2 = 0
+                C1 = 0
+                C2 = 0
+                C3 = 0
                 for bond in atom.bond:
                     AnotherAtom = None
                     if bond.Atom2.Type == atom.Type:
                         AnotherAtom = bond.Atom1
                     else:
                         AnotherAtom = bond.Atom2
+
+                    if bond.Type == 1:
+                        if AnotherAtom.Type == 1:
+                            C1 += 1
+                        if AnotherAtom.Type == 2:
+                            O1 += 1
+                    if bond.Type == 2:
+                        if AnotherAtom.Type == 1:
+                            C2 += 1
+                        if AnotherAtom.Type == 2:
+                            O2 += 1
+                    if bond.Type == 3:
+                        C3 += 1
+                if TempIndex == -1:
+                    continue
+                TypeIndex = TempIndex * 100000 + O1 * 10000 + O2 * 1000 + C1 * 100 * C2 * 10 + C3
+                if TypeIndex in Group_Type:
+                    pass
+                else:
+                    Group_Type.append(TypeIndex)
+                del O1, O2, C1, C2, C3
+
             G = Graph()
             E = []
+    for type in Group_Type:
+        print(type)
     return
 
 
